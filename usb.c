@@ -15,9 +15,8 @@ int main(){
     int ret;
     char string[512];
     struct usb_device* dev;
-    
 
-    
+
     printf("bus/device idVendor/idProduct\n");
     for (; bus != NULL; bus = bus->next) {
         for (dev = bus->devices; dev; dev = dev->next) {
@@ -25,26 +24,17 @@ int main(){
             printf("%s/%s %04X/%04X\n", bus->dirname, dev->filename,
             dev->descriptor.idVendor, dev->descriptor.idProduct);
            	udev = usb_open(dev);
-           	
-           	
-           	
-        }
-    }
-    
-    
+           	if (udev) {
+        		if (dev->descriptor.iManufacturer) {
+         			ret = usb_get_string_simple(udev, dev->descriptor.iManufacturer,
+            		string, sizeof (string));
+            		if (ret > 0)
+           				printf("- Manufacturer : %s\n", string);
+            		else
+                		printf("- Unable to fetch manufacturer string\n");
+                }
+        	}
+    	}
+	}
 }
-/*
-    if (udev) {
-        if (dev->descriptor.iManufacturer) {
-         Retrieves a string descriptor from a device using the first language 
-            //ret = usb_get_string_simple(udev, dev->descriptor.iManufacturer,
-            //string, sizeof (string));
-            if (ret > 0)
-                printf("- Manufacturer : %s\n", string);
-            else
-                printf("- Unable to fetch manufacturer string\n");
-        }
-    }
-
-}*/
         
