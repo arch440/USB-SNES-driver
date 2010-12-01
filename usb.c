@@ -1,22 +1,41 @@
 #include "usb.h"
 
+
 int main(void){
+//	printf("SizeOF %ld\n", sizeof(struct usb_dev_handle*));
     usb_init();
+    usb_set_debug(2);
     usb_find_busses();
     usb_find_devices();
-	printdev(bus, dev);
-	probedev(bus, dev);
+    char buffer[256];
+
+	struct usb_dev_handle* green = malloc(256);
+	green = get_green(bus, dev);
+	
+	printf("Code: %d\n", usb_detach_kernel_driver_np(green, 0));
+	printf("Halt: %d\n", usb_clear_halt(green, 0x81));
+	printf("Interface: %d\n", usb_claim_interface(green, 0));
+	
+	printf("Read: %d\n", usb_bulk_read(green, 1, buffer, 512, 100));
+	printf("Buffer: %x\n", buffer);
+
+	return 0;
 }
 
-void probedev(struct usb_bus* bus, struct usb_device* dev){
-	int i = 0;
+
+
+struct usb_dev_handle* get_green(struct usb_bus* bus, struct usb_device* dev){
 	for(bus = usb_get_busses(); bus != NULL; bus = bus->next){
-    	for(dev = bus->devices; dev != NULL; dev = dev->next){
-			printf("VID%d: %x\nPID%d: %x\n", i, dev->descriptor.idVendor,
-			i, dev->descriptor.idProduct);
-			i++;
-		}
-	}	
+        for(dev = bus->devices; dev != NULL; dev = dev->next){
+        	if(dev->descriptor.idVendor == VID && 
+        		dev->descriptor.idProduct == PID){
+        		printf("Returnning dev-handle");
+        		return usb_open(dev);
+        	}
+        	printf("Device not connected!\n");
+        	exit(0);
+        }
+    }
 }
 
 void printdev(struct usb_bus* bus, struct usb_device* dev){

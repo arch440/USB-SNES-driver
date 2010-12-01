@@ -1,12 +1,19 @@
 #include <usb.h>
 #include <stdio.h>
-#define MID 0x0000
-#define VID 0x0000
+#include <stdlib.h>
+#include <string.h>
+#include <wchar.h>
+#include <wctype.h>
+#define VID 0x0e8f
+#define PID 0x3013
+#define true  1
+#define false 0
 
-char string[256];
+char string[512];
 struct usb_bus* bus;
 struct usb_device* dev;
 usb_dev_handle* udev;
 
 void printdev();
 void probedev();
+struct usb_dev_handle* get_green();
