@@ -3,26 +3,27 @@
 
 int main(void){
 //	printf("SizeOF %ld\n", sizeof(struct usb_dev_handle*));
-    usb_init();
-    usb_set_debug(2);
-    usb_find_busses();
-    usb_find_devices();
-    char buffer[256];
+    libusb_init();
+    libusb_set_debug(2);
+    libusb_find_busses();
+    libusb_find_devices();
+
 
 	struct usb_dev_handle* green = malloc(256);
 	green = get_green(bus, dev);
-	
-	printf("Code: %d\n", usb_detach_kernel_driver_np(green, 0));
+	printf("Detach: %d\n", usb_detach_kernel_driver_np(green, 0));
 	printf("Halt: %d\n", usb_clear_halt(green, 0x81));
 	printf("Interface: %d\n", usb_claim_interface(green, 0));
-	
-	printf("Read: %d\n", usb_bulk_read(green, 1, buffer, 512, 100));
-	printf("Buffer: %x\n", buffer);
+
+
+	libusb_alloc_transfer(0);
+	   
+//	printf("Buffer: %x\n", buffer);
 
 	return 0;
 }
 
-
+/*
 
 struct usb_dev_handle* get_green(struct usb_bus* bus, struct usb_device* dev){
 	for(bus = usb_get_busses(); bus != NULL; bus = bus->next){
@@ -32,11 +33,12 @@ struct usb_dev_handle* get_green(struct usb_bus* bus, struct usb_device* dev){
         		printf("Returnning dev-handle");
         		return usb_open(dev);
         	}
-        	printf("Device not connected!\n");
-        	exit(0);
-        }
+		}
     }
+    printf("Device not connected!\n");
+    exit(1);
 }
+
 
 void printdev(struct usb_bus* bus, struct usb_device* dev){
     printf("bus/device idVendor/idProduct\n");
@@ -60,5 +62,7 @@ void printdev(struct usb_bus* bus, struct usb_device* dev){
     	}
     }
 }
+
+*/
 
         

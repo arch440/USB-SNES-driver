@@ -1,9 +1,8 @@
-#include <usb.h>
+#include <libusb-1.0/libusb.h>
+//#include <usb.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <wchar.h>
-#include <wctype.h>
 #define VID 0x0e8f
 #define PID 0x3013
 #define true  1
