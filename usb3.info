@@ -1,4 +1,0 @@
-/:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=uhci_hcd/2p, 12M
-    |__ Port 1: Dev 4, If 0, Class=HID, Driver=, 12M
-    |__ Port 2: Dev 2, If 0, Class=hub, Driver=hub/7p, 12M
-/:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=ehci_hcd/6p, 480M
